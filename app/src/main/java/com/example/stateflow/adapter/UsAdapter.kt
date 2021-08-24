@@ -1,4 +1,4 @@
-package com.example.stateflow
+package com.example.stateflow.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

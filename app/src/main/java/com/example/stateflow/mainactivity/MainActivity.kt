@@ -2,24 +2,23 @@ package com.example.stateflow.mainactivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.stateflow.R
-import com.example.stateflow.UsAdapter
+import com.example.stateflow.adapter.UsAdapter
 import com.example.stateflow.databinding.ActivityMainBinding
-import com.example.stateflow.mainactivity.state.Status
-import com.example.stateflow.response.Article
+import com.example.stateflow.state.Status
 import kotlinx.coroutines.flow.collect
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels()
-     var usAdapter =  UsAdapter(arrayListOf())
+     private var usAdapter =  UsAdapter(arrayListOf())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 
-        // simple test for fetch data from api with stateFlow.
+        // simple test for fetch data from api with stateflow.
         binding.recyclerView.adapter = usAdapter
         mainViewModel.fetchData()
         lifecycleScope.launchWhenStarted {
@@ -96,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                 when(it.status){
                     Status.SUCCESS ->{
                         binding.progressBar.visibility = View.GONE
+                        // call fun addData from adapter.
                         usAdapter.addData(it.data!!)
                         binding.recyclerView.visibility = View.VISIBLE
                     }
@@ -110,5 +110,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+
     }
 }

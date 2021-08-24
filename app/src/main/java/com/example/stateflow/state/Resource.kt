@@ -1,7 +1,7 @@
-package com.example.stateflow.mainactivity.state
+package com.example.stateflow.state
 
-
-data class Resource < out T>( val status: Status , val data : T? , val message : String?){
+/* this class for state of data */
+data class Resource <out T>( val status: Status , val data : T? , val message : String?){
 
     companion object{
         fun <T> success( data : T?) : Resource<T>{

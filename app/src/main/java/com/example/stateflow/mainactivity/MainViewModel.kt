@@ -3,13 +3,12 @@ package com.example.stateflow.mainactivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.stateflow.mainactivity.state.Resource
+import com.example.stateflow.state.Resource
 import com.example.stateflow.response.Article
-import com.example.stateflow.response.UsResponse
 import com.example.stateflow.retrofit.RetrofitBuilder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -44,7 +43,7 @@ class MainViewModel : ViewModel() {
 
     // fetch data from api.
     fun fetchData(){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
            val response =  RetrofitBuilder.makeRetrofit().getUsResponse("us","business","9b3d814ad7e840fa97fa9608886787f5")
             resultFromAdapter.catch { e ->
                 resultFromAdapter.value = (Resource.error(e.toString(),null))
