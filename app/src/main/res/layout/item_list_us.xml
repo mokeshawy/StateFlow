@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_list_latest_news_relative_margin"
+        android:padding="@dimen/item_list_latest_news_relative_padding"
+        android:background="@drawable/item_grey_border_background"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_list_latest_news_relative_margin"
+            android:padding="@dimen/item_list_latest_news_relative_padding"
+            android:background="@drawable/app_gradinet_color_background"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_item_latest_news"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_list_latest_news_image_height"
+                android:layout_marginStart="@dimen/item_list_latest_news_image_margin"
+                android:layout_marginTop="@dimen/item_list_latest_news_image_margin"
+                android:layout_marginEnd="@dimen/item_list_latest_news_image_margin"
+                android:layout_marginBottom="@dimen/item_list_latest_news_image_margin"
+                android:background="@color/white"
+                android:contentDescription="@string/content_description"
+                android:minHeight="@dimen/item_list_latest_news_image_height"
+                android:scaleType="fitXY"
+                android:src="@drawable/app_gradinet_color_background" />
+
+            <View
+                android:id="@+id/view_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_below="@id/iv_item_latest_news"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/ll_latest_news_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_divider"
+                android:background="@android:color/darker_gray"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/latest_news_item_paddingStartEnd"
+                android:paddingTop="@dimen/latest_news_item_paddingTopBottom"
+                android:paddingEnd="@dimen/latest_news_item_paddingStartEnd"
+                android:paddingBottom="@dimen/latest_news_item_paddingTopBottom">
+
+                <TextView
+                    android:id="@+id/tv_latest_news_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tv_itm_list_title_height"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/list_latest_news_item_textSize"
+                    tools:text="Item Name"/>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

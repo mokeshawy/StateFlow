@@ -1,27 +1,28 @@
-package com.example.stateflow
+package com.example.stateflow.mainactivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.example.stateflow.R
+import com.example.stateflow.UsAdapter
 import com.example.stateflow.databinding.ActivityMainBinding
+import com.example.stateflow.mainactivity.state.Status
+import com.example.stateflow.response.Article
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.zip
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels()
-
+     var usAdapter =  UsAdapter(arrayListOf())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // connect with viewModel.
         binding.lifecycleOwner = this
@@ -79,14 +80,35 @@ class MainActivity : AppCompatActivity() {
 //            Log.d("here",it)
 //        })
 
-        mainViewModel.startTimerStateFlow()
+//        mainViewModel.startTimerStateFlow()
+//        lifecycleScope.launchWhenStarted {
+//            mainViewModel.timerStateFlow.collect {
+//                binding.tvMainActivity.text = it.toString()
+//                Log.d("here",it.toString())
+//            }
+//        }
+
+        // simple test for fetch data from api with stateFlow.
+        binding.recyclerView.adapter = usAdapter
+        mainViewModel.fetchData()
         lifecycleScope.launchWhenStarted {
-            mainViewModel.timerStateFlow.collect {
-                binding.tvMainActivity.text = it.toString()
-                Log.d("here",it.toString())
+            mainViewModel.resultFromAdapter.collect {
+                when(it.status){
+                    Status.SUCCESS ->{
+                        binding.progressBar.visibility = View.GONE
+                        usAdapter.addData(it.data!!)
+                        binding.recyclerView.visibility = View.VISIBLE
+                    }
+                    Status.LOADING ->{
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.GONE
+                    }
+                    Status.ERROR ->{
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(this@MainActivity,it.message,Toast.LENGTH_LONG ).show()
+                    }
+                }
             }
         }
-
-
     }
 }

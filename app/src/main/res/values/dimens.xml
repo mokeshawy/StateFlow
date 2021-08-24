@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="splash_title_text_size">30sp</dimen>
+    <dimen name="title_tool_bar_text_size">20sp</dimen>
+
+    <dimen name="item_list_latest_news_relative_margin">5dp</dimen>
+    <dimen name="item_list_latest_news_relative_padding">1dp</dimen>
+    <dimen name="item_list_latest_news_image_height">150dp</dimen>
+    <dimen name="item_list_latest_news_image_margin">10dp</dimen>
+
+    <dimen name="divider_height">1dp</dimen>
+
+    <dimen name="list_latest_news_item_textSize">10sp</dimen>
+    <dimen name="latest_news_item_paddingStartEnd">10dp</dimen>
+    <dimen name="latest_news_item_paddingTopBottom">5dp</dimen>
+    <dimen name="dashboard_item_price_marginTop">2dp</dimen>
+
+    <dimen name="tv_latest_news_size">25sp</dimen>
+
+    <dimen name="tv_progress_bar">12sp</dimen>
+    <dimen name="tv_itm_list_title_height">45dp</dimen>
+
+    <dimen name="toggle_button_width">30dp</dimen>
+    <dimen name="toggle_button_height">30dp</dimen>
+
+    <dimen name="tv_title_details_news_text_size">17sp</dimen>
+    <dimen name="tv_details_news_text_size">15sp</dimen>
+
+    <dimen name="list_other_news_item_textSize">13sp</dimen>
+
+
+
+
+
+</resources>
