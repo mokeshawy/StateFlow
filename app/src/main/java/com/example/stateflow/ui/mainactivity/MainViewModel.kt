@@ -1,5 +1,6 @@
 package com.example.stateflow.ui.mainactivity
 
+
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+class MainViewModel() : ViewModel() {
 
     val timerLiveData = MutableLiveData<String>()
 
@@ -50,18 +51,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun refreshData(){
-
-    }
     // fetch data from api.
     fun fetchData(){
         viewModelScope.launch(Dispatchers.IO) {
-           val response =  repository.getUsList()
-            resultFromAdapter.catch { e ->
-                resultFromAdapter.value = (Resource.error(e.toString(),null))
-            }.collect {
-                resultFromAdapter.value = (Resource.success(response.body()!!.articles))
-                Log.d("test", "Api${repository.api}")
+
+            try{ // when no internet connection will no crash ui.
+                val response =  repository.getUsList()
+                resultFromAdapter.catch { e ->
+                    resultFromAdapter.value = (Resource.error(e.toString(),null))
+                }.collect {
+                    resultFromAdapter.value = (Resource.success(response.body()!!.articles))
+                    Log.d("test", "Api${repository.api}")
+                }
+            }catch (e:Exception){
+
             }
         }
     }

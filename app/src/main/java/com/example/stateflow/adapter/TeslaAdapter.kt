@@ -17,10 +17,10 @@ class TeslaAdapter (private val dataSet: ArrayList<Article> , var teslaOnClick: 
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
+        // initialize onClick interface.
         fun initialize(viewHolder: ViewHolder, dataSet: Article, action: OnClick) {
             action.teslaOnClick(viewHolder, dataSet, adapterPosition)
         }
-
     }
 
     // Create new views (invoked by the layout manager)
@@ -40,17 +40,13 @@ class TeslaAdapter (private val dataSet: ArrayList<Article> , var teslaOnClick: 
         binding.tvLatestNewsItem.text = tesla.title
         binding.ivItemLatestNews.loadImage(tesla.urlToImage , getProgressDrawable(viewHolder.itemView.context))
 
+        //call function initialize interface.
         viewHolder.initialize(viewHolder , tesla , teslaOnClick)
 
     }
 
     // Return the size of your dataSet (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
-
-    // Interface on click
-//    interface OnClickAppleNews {
-//        fun onClickAppleNews(viewHolder: ViewHolder, dataSet: Article, position: Int)
-//    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun addData(list: List<Article>) {

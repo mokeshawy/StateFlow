@@ -1,10 +1,12 @@
 package com.example.stateflow.ui.mainactivity
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.stateflow.R
@@ -13,16 +15,19 @@ import com.example.stateflow.databinding.ActivityMainBinding
 import com.example.stateflow.onclickinterface.OnClick
 import com.example.stateflow.response.Article
 import com.example.stateflow.state.Status
+import com.example.stateflow.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity(),OnClick{
 
     lateinit var binding        : ActivityMainBinding
     private val mainViewModel   : MainViewModel by viewModels()
      private var teslaAdapter =  TeslaAdapter(arrayListOf(),this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,40 +101,48 @@ class MainActivity : AppCompatActivity(),OnClick{
         binding.recyclerView.adapter = teslaAdapter
         binding.swipLayOut.setOnRefreshListener {
             mainViewModel.fetchData()
+
             GlobalScope.launch {
                 binding.swipLayOut.isRefreshing = false
                 binding.swipLayOut.setColorSchemeResources(R.color.colorPrimary)
                 delay(3000)
             }
         }
-        mainViewModel.fetchData()
-        lifecycleScope.launchWhenStarted {
-            mainViewModel.resultFromAdapter.collect {
-                when(it.status){
-                    Status.SUCCESS ->{
-                        binding.progressBar.visibility = View.GONE
-                        // call fun addData from adapter.
-                        teslaAdapter.addData(it.data!!)
-                        binding.recyclerView.visibility = View.VISIBLE
-                    }
-                    Status.LOADING ->{
-                        binding.progressBar.visibility = View.VISIBLE
-                        binding.recyclerView.visibility = View.GONE
-                    }
-                    Status.ERROR ->{
-                        binding.progressBar.visibility = View.GONE
-                        Toast.makeText(this@MainActivity,it.message,Toast.LENGTH_LONG ).show()
+
+        if(Utils.isNetworkAvailable(this)){
+            mainViewModel.fetchData()
+            lifecycleScope.launchWhenStarted {
+                mainViewModel.resultFromAdapter.collect {
+                    when(it.status){
+                        Status.SUCCESS ->{
+                            binding.progressBar.visibility = View.GONE
+                            // call fun addData from adapter.
+                            teslaAdapter.addData(it.data!!)
+                            binding.recyclerView.visibility = View.VISIBLE
+                        }
+                        Status.LOADING ->{
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.recyclerView.visibility = View.GONE
+                        }
+                        Status.ERROR ->{
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(this@MainActivity,it.message,Toast.LENGTH_LONG ).show()
+                        }
                     }
                 }
             }
+        }else{
+            Utils.constToast(this,"No Internet connection")
+            binding.progressBar.visibility = View.GONE
+            binding.tvMainActivity.visibility = View.VISIBLE
         }
-
 
     }
 
+    // override function onClick item view for adapter.
     override fun teslaOnClick(viewHolder: TeslaAdapter.ViewHolder, tesla: Article, position: Int) {
         viewHolder.itemView.setOnClickListener {
-            Toast.makeText(this,tesla.title.toString(),Toast.LENGTH_SHORT).show()
+            Utils.constToast(this,tesla.title.toString())
         }
     }
 }
