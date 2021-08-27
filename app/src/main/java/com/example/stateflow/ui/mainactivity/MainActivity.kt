@@ -1,5 +1,6 @@
 package com.example.stateflow.ui.mainactivity
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity(),OnClick{
         // connect with viewModel.
         binding.lifecycleOwner = this
         binding.mainActivity = mainViewModel
+
 
         /* ------ Flow ---- */
 
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity(),OnClick{
         binding.recyclerView.adapter = teslaAdapter
         binding.swipLayOut.setOnRefreshListener {
             mainViewModel.fetchData()
-
+            this.recreate() // when disconnect internet or connect internet will be refresh activity.
             GlobalScope.launch {
                 binding.swipLayOut.isRefreshing = false
                 binding.swipLayOut.setColorSchemeResources(R.color.colorPrimary)
@@ -111,13 +113,14 @@ class MainActivity : AppCompatActivity(),OnClick{
 
         if(Utils.isNetworkAvailable(this)){
             mainViewModel.fetchData()
-            lifecycleScope.launchWhenStarted {
+            lifecycleScope.launch {
                 mainViewModel.resultFromAdapter.collect {
                     when(it.status){
                         Status.SUCCESS ->{
                             binding.progressBar.visibility = View.GONE
                             // call fun addData from adapter.
                             teslaAdapter.addData(it.data!!)
+
                             binding.recyclerView.visibility = View.VISIBLE
                         }
                         Status.LOADING ->{

@@ -54,14 +54,16 @@ class MainViewModel() : ViewModel() {
     // fetch data from api.
     fun fetchData(){
         viewModelScope.launch(Dispatchers.IO) {
-
             try{ // when no internet connection will no crash ui.
                 val response =  repository.getUsList()
                 resultFromAdapter.catch { e ->
                     resultFromAdapter.value = (Resource.error(e.toString(),null))
                 }.collect {
-                    resultFromAdapter.value = (Resource.success(response.body()!!.articles))
-                    Log.d("test", "Api${repository.api}")
+                    viewModelScope.launch (Dispatchers.Main){
+                        resultFromAdapter.value = (Resource.success(response.body()!!.articles))
+                        Log.d("test", "Api${repository.api}")
+                    }
+
                 }
             }catch (e:Exception){
 

@@ -32,7 +32,6 @@ object Utils {
 
     // function show image using picasso.
     fun ImageView.loadImage( uri : String? , progressDrawable: CircularProgressDrawable){
-        progressDrawable.setColorSchemeColors(R.color.colorPrimary)
         Picasso.get().load(uri).fit().centerInside().placeholder(progressDrawable).into(this)
     }
 
