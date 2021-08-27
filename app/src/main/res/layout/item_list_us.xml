@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/item_list_latest_news_relative_margin"
         android:padding="@dimen/item_list_latest_news_relative_padding"
-        android:background="@drawable/item_grey_border_background"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp"
         android:orientation="vertical"
@@ -38,8 +37,8 @@
                 android:background="@color/white"
                 android:contentDescription="@string/content_description"
                 android:minHeight="@dimen/item_list_latest_news_image_height"
-                android:scaleType="fitXY"
-                android:src="@drawable/app_gradinet_color_background" />
+                android:padding="2dp"
+                android:scaleType="fitXY"/>
 
             <View
                 android:id="@+id/view_divider"
@@ -53,7 +52,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view_divider"
-                android:background="@android:color/darker_gray"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/latest_news_item_paddingStartEnd"

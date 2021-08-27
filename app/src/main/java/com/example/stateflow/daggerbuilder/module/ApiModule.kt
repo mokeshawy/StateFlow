@@ -7,10 +7,12 @@ import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 class ApiModule {
 
+    @Singleton
     @Provides
     fun provideUsApi() : ConnectionEndPoint{
         return Retrofit.Builder().baseUrl(Utils.BASE_URL)
@@ -19,6 +21,7 @@ class ApiModule {
             .create(ConnectionEndPoint::class.java)
     }
 
+    @Singleton
     @Provides
     fun providerUsService() : Repository{
         return Repository()

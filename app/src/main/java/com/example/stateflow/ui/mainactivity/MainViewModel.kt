@@ -1,5 +1,6 @@
 package com.example.stateflow.ui.mainactivity
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,7 +8,6 @@ import com.example.stateflow.daggerbuilder.component.DaggerAppComponent
 import com.example.stateflow.repository.Repository
 import com.example.stateflow.state.Resource
 import com.example.stateflow.response.Article
-import com.example.stateflow.retrofit.RetrofitBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +50,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun refreshData(){
+
+    }
     // fetch data from api.
     fun fetchData(){
         viewModelScope.launch(Dispatchers.IO) {
@@ -58,6 +61,7 @@ class MainViewModel : ViewModel() {
                 resultFromAdapter.value = (Resource.error(e.toString(),null))
             }.collect {
                 resultFromAdapter.value = (Resource.success(response.body()!!.articles))
+                Log.d("test", "Api${repository.api}")
             }
         }
     }

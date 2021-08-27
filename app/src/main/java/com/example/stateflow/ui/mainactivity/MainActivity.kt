@@ -8,16 +8,21 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.stateflow.R
-import com.example.stateflow.adapter.UsAdapter
+import com.example.stateflow.adapter.TeslaAdapter
 import com.example.stateflow.databinding.ActivityMainBinding
+import com.example.stateflow.onclickinterface.OnClick
+import com.example.stateflow.response.Article
 import com.example.stateflow.state.Status
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),OnClick{
 
-    lateinit var binding : ActivityMainBinding
-    private val mainViewModel : MainViewModel by viewModels()
-     private var usAdapter =  UsAdapter(arrayListOf())
+    lateinit var binding        : ActivityMainBinding
+    private val mainViewModel   : MainViewModel by viewModels()
+     private var teslaAdapter =  TeslaAdapter(arrayListOf(),this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +93,15 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         // simple test for fetch data from api with stateflow.
-        binding.recyclerView.adapter = usAdapter
+        binding.recyclerView.adapter = teslaAdapter
+        binding.swipLayOut.setOnRefreshListener {
+            mainViewModel.fetchData()
+            GlobalScope.launch {
+                binding.swipLayOut.isRefreshing = false
+                binding.swipLayOut.setColorSchemeResources(R.color.colorPrimary)
+                delay(3000)
+            }
+        }
         mainViewModel.fetchData()
         lifecycleScope.launchWhenStarted {
             mainViewModel.resultFromAdapter.collect {
@@ -96,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                     Status.SUCCESS ->{
                         binding.progressBar.visibility = View.GONE
                         // call fun addData from adapter.
-                        usAdapter.addData(it.data!!)
+                        teslaAdapter.addData(it.data!!)
                         binding.recyclerView.visibility = View.VISIBLE
                     }
                     Status.LOADING ->{
@@ -112,5 +125,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun teslaOnClick(viewHolder: TeslaAdapter.ViewHolder, tesla: Article, position: Int) {
+        viewHolder.itemView.setOnClickListener {
+            Toast.makeText(this,tesla.title.toString(),Toast.LENGTH_SHORT).show()
+        }
     }
 }

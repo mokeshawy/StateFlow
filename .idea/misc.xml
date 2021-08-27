@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/item_grey_border_background.xml" value="0.3807291666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3202247191011236" />
         <entry key="app/src/main/res/layout/item_list_latest_news.xml" value="0.3645833333333333" />
+        <entry key="app/src/main/res/layout/item_list_us.xml" value="0.3645833333333333" />
       </map>
     </option>
   </component>

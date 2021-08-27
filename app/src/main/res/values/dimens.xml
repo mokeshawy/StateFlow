@@ -10,7 +10,7 @@
 
     <dimen name="divider_height">1dp</dimen>
 
-    <dimen name="list_latest_news_item_textSize">10sp</dimen>
+    <dimen name="list_latest_news_item_textSize">14sp</dimen>
     <dimen name="latest_news_item_paddingStartEnd">10dp</dimen>
     <dimen name="latest_news_item_paddingTopBottom">5dp</dimen>
     <dimen name="dashboard_item_price_marginTop">2dp</dimen>
