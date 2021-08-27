@@ -1,4 +1,4 @@
-package com.example.stateflow.mainactivity
+package com.example.stateflow.ui.mainactivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

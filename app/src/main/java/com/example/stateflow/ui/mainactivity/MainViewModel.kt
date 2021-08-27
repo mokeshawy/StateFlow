@@ -1,8 +1,10 @@
-package com.example.stateflow.mainactivity
+package com.example.stateflow.ui.mainactivity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.stateflow.daggerbuilder.component.DaggerAppComponent
+import com.example.stateflow.repository.Repository
 import com.example.stateflow.state.Resource
 import com.example.stateflow.response.Article
 import com.example.stateflow.retrofit.RetrofitBuilder
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainViewModel : ViewModel() {
 
@@ -20,6 +23,12 @@ class MainViewModel : ViewModel() {
     val timerStateFlow = MutableStateFlow<Int>(0)
 
     val resultFromAdapter = MutableStateFlow<Resource<List<Article>>>(Resource.loading(null))
+
+    @Inject
+    lateinit var repository : Repository
+    init {
+        DaggerAppComponent.create().inject(this)
+    }
 
     fun startTimerLiveData(){
         viewModelScope.launch {
@@ -44,7 +53,7 @@ class MainViewModel : ViewModel() {
     // fetch data from api.
     fun fetchData(){
         viewModelScope.launch(Dispatchers.IO) {
-           val response =  RetrofitBuilder.makeRetrofit().getUsResponse("us","business","9b3d814ad7e840fa97fa9608886787f5")
+           val response =  repository.getUsList()
             resultFromAdapter.catch { e ->
                 resultFromAdapter.value = (Resource.error(e.toString(),null))
             }.collect {

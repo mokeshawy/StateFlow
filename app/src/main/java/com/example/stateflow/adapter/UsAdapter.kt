@@ -1,6 +1,7 @@
 package com.example.stateflow.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stateflow.databinding.ItemListUsBinding
@@ -9,8 +10,9 @@ import com.squareup.picasso.Picasso
 
 class UsAdapter (private val dataSet: ArrayList<Article>) : RecyclerView.Adapter<UsAdapter.ViewHolder>() {
 
-    class ViewHolder(var binding: ItemListUsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private lateinit var binding : ItemListUsBinding
+
+    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
 //        fun initialize(viewHolder: ViewHolder, dataSet: Article, action: OnClickAppleNews) {
 //            action.onClickAppleNews(viewHolder, dataSet, adapterPosition)
@@ -21,7 +23,8 @@ class UsAdapter (private val dataSet: ArrayList<Article>) : RecyclerView.Adapter
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
-        return ViewHolder( ItemListUsBinding.inflate( LayoutInflater.from(viewGroup.context), viewGroup, false ))
+        binding = ItemListUsBinding.inflate(LayoutInflater.from(viewGroup.context),)
+        return ViewHolder(binding.root)
 
     }
 
@@ -31,8 +34,8 @@ class UsAdapter (private val dataSet: ArrayList<Article>) : RecyclerView.Adapter
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
 
-        viewHolder.binding.tvLatestNewsItem.text = dataSet[position].title
-        Picasso.get().load(dataSet[position].urlToImage).into(viewHolder.binding.ivItemLatestNews)
+        binding.tvLatestNewsItem.text = dataSet[position].title
+        Picasso.get().load(dataSet[position].urlToImage).into(binding.ivItemLatestNews)
 
         //viewHolder.initialize(viewHolder , dataSet[position] , onClickAppleNews)
 
